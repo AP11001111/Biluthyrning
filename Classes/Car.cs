@@ -26,14 +26,14 @@ namespace Biluthyrning.Classes
             string availabilityString;
             if (CarAvailability)
             {
-                availabilityString = "Tillgängligt";
+                availabilityString = "Available";
             }
             else
             {
-                availabilityString = "Uthyrt";
+                availabilityString = "Unavailable";
             }
 
-            string stringToReturn = $"Bilmärke: {CarMake}\nPris: SEK {RentPerDay} per dag\nAckumulerad körsträcka: {OdometerReading}\nTillgänglighet: {availabilityString}";
+            string stringToReturn = $"Car make: {CarMake}\nRent: SEK {RentPerDay} per dag\nMileage: {OdometerReading}\nAvailability: {availabilityString}";
             return stringToReturn;
         }
 

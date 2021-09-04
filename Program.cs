@@ -8,6 +8,7 @@ namespace Biluthyrning
     {
         private static void Main(string[] args)
         {
+            List<CarRentalOffice> aListOfOffices = new List<CarRentalOffice>();
             List<Car> aListOfCars = new List<Car>
             {
                 new Car("Volvo1",500,50000),
@@ -26,12 +27,14 @@ namespace Biluthyrning
                 new Car("Volvo5",400,70000),
             };
 
-            CarRentalOffice StockholmOffice = new CarRentalOffice("Stockholm kontor", aListOfCars);
-            CarRentalOffice GothenbergOffice = new CarRentalOffice("Göteborg kontor", anotherListOfCars);
+            CarRentalOffice StockholmOffice = new CarRentalOffice("Stockholm office", aListOfCars);
+            CarRentalOffice GothenbergOffice = new CarRentalOffice("Göteborg office", anotherListOfCars);
 
-            UI uiForOffices = new UI();
-            uiForOffices.AddOffice(StockholmOffice);
-            uiForOffices.AddOffice(GothenbergOffice);
+            aListOfOffices.Add(StockholmOffice);
+            aListOfOffices.Add(GothenbergOffice);
+
+            UI uiForOffices = new UI(aListOfOffices);
+            uiForOffices.AddOffice(new CarRentalOffice("Uppsala office", new Car("Volvo1", 1000, 1310)));
 
             StockholmOffice.AddCar(new Car("Volvo6", 900, 231));
 

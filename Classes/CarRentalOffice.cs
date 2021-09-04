@@ -37,10 +37,11 @@ namespace Biluthyrning.Classes
             set {; }
         }
 
-        public CarRentalOffice(string officeName)
+        public CarRentalOffice(string officeName, Car car)
         {
             OfficeName = officeName;
             Cars = new List<Car>();
+            Cars.Add(car);
             OfficeRevenue = 0;
         }
 
@@ -53,15 +54,12 @@ namespace Biluthyrning.Classes
 
         public void AddCar(Car car)
         {
-            if (!Cars.Contains(car))
-            {
-                Cars.Add(car);
-            }
+            Cars.Add(car);
         }
 
         public override string ToString()
         {
-            string stringToReturn = $"{OfficeName}s intäkter: SEK {OfficeRevenue}\nAntal tillgängliga bilar: {CarsAvailable}\n\nAlla bilar: " + CarInCarsToString();
+            string stringToReturn = $"Total cars available: {CarsAvailable}\n\nAll cars: " + CarInCarsToString();
             return stringToReturn;
         }
 
@@ -72,7 +70,6 @@ namespace Biluthyrning.Classes
             {
                 stringToReturn += "\n\n" + $"Bilnummer: {i + 1}\n" + Cars[i].ToString();
             }
-            //foreach (Car c in Cars) { stringToReturn += "\n\n" + c.ToString(); };
             return stringToReturn;
         }
     }
