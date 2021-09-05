@@ -1,2 +1,2 @@
-# Biluthyrning
-Biluthyrningsfirma med flera uthyrningsställen och bilar.
+# CarRental
+A car rental with multiple renting offices and cars.
