@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace Biluthyrning.Classes
 {
     internal class CustomerUI : UI
     {
+        private readonly object CurrentDayLock = new object();
+
         public CustomerUI(List<CarRentalOffice> carRentalOffices) : base(carRentalOffices)
         {
             CarRentalOffices = carRentalOffices;
@@ -75,7 +78,10 @@ namespace Biluthyrning.Classes
             {
                 RestartUI();
             }
-            CarRentalOffices[ChosenOffice].Cars[CarChosen].Rent(carDaysRented, carKmDriven);
+            //lock (CurrentDayLock)
+            //{
+            CarRentalOffices[ChosenOffice].Cars[CarChosen].Rent(CurrentDay, carDaysRented, carKmDriven);
+            //}
         }
 
         public void ThankYouUI()
@@ -84,6 +90,8 @@ namespace Biluthyrning.Classes
             Console.WriteLine("Thank you for choosing CSharp Car rental!");
             Console.WriteLine("\nUpdated car details after renting:\n");
             Console.WriteLine(CarRentalOffices[ChosenOffice].Cars[CarChosen]);
+            Console.WriteLine("Day of car rent: " + CarRentalOffices[ChosenOffice].Cars[CarChosen].DayOfCarRent);
+            Console.WriteLine("Car rented for: " + CarRentalOffices[ChosenOffice].Cars[CarChosen].DaysCarRentedFor + " days");
             bool flag = false;
             while (!flag)
             {

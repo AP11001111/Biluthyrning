@@ -1,6 +1,13 @@
-﻿using System;
+﻿/*
+    When ReduceCarDaysUntilAvailable => RefreshLiveTicker isnt assigned true.
+    When LiveTicker is shown while reducing DaysUntilAvailable => LiveTicker doesnt show the updataded DaysUntilAvailable
+*/
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Biluthyrning.Classes
 {
@@ -8,18 +15,44 @@ namespace Biluthyrning.Classes
     {
         private int[] allUiOptions = { 0, 1, 2, 3 };
         public CustomerUI ACustomerUI { get; set; }
-
         public EmployeeUI AnEmployeeUI { get; set; }
+        public LiveTicker ALiveTicker { get; set; }
         public bool StopUI { get; set; }
+        public bool RefreshLiveTicker { get; set; }
         public int ChosenOffice { get; set; }
         public int ChosenUI { get; set; }
         public int CarChosen { get; set; }
+        public int CurrentDay { get; set; }
         public List<CarRentalOffice> CarRentalOffices { get; set; }
 
         public UI(List<CarRentalOffice> carRentalOffices)
         {
             CarRentalOffices = carRentalOffices;
             StopUI = false;
+        }
+
+        public void UpdateCarDaysToAvailability()
+        {
+            Parallel.ForEach(CarRentalOffices, office =>
+            {
+                Parallel.ForEach(office.Cars, car =>
+                    {
+                        if (!car.CarAvailability)
+                        {
+                            car.ReduceDaysUntilCarAvailable();
+                        }
+                    });
+            });
+            //foreach (CarRentalOffice office in CarRentalOffices)
+            //{
+            //    foreach (Car car in office.Cars)
+            //    {
+            //        if (!car.CarAvailability)
+            //        {
+            //            car.ReduceDaysUntilCarAvailable();
+            //        }
+            //    };
+            //};
         }
 
         public void AddOffice(CarRentalOffice anOffice)
@@ -29,10 +62,13 @@ namespace Biluthyrning.Classes
 
         public void StartUI()
         {
-            AnEmployeeUI = new EmployeeUI(CarRentalOffices);
-            ACustomerUI = new CustomerUI(CarRentalOffices);
+            RefreshLiveTicker = false;
+            //Calender calender = new Calender();
             while (!StopUI)
             {
+                AnEmployeeUI = new EmployeeUI(CarRentalOffices);
+                ACustomerUI = new CustomerUI(CarRentalOffices);
+                ALiveTicker = new LiveTicker(CarRentalOffices[ChosenOffice]);
                 WelcomeUI();
                 SelectUI();
                 switch (ChosenUI)
@@ -46,10 +82,37 @@ namespace Biluthyrning.Classes
                         break;
 
                     case 3:
-                        //Start live ticker
+                        RefreshLiveTicker = true;
+                        //Thread.Sleep(1500);
+                        while (ALiveTicker.StringToReturn != "N" || ALiveTicker.StringToReturn != "R")
+                        {
+                            switch (ALiveTicker.StringToReturn)
+                            {
+                                case "R":
+                                    RefreshLiveTicker = false;
+                                    RestartUI();
+                                    break;
+
+                                case "N":
+                                    StopUI = true;
+                                    RefreshLiveTicker = false;
+
+                                    break;
+                            }
+                        }
+
                         break;
                 }
             }
+            //Parallel.Invoke(() =>
+            //                    {
+            //                        calender.StartCalender();
+            //                    },
+
+            //                () =>
+            //                    {
+            //                    }
+            //            );
         }
 
         public void WelcomeUI()
@@ -62,19 +125,13 @@ namespace Biluthyrning.Classes
                 Console.WriteLine($"{i + 1}: {CarRentalOffices[i].OfficeName}");
             }
             Console.WriteLine("\nInput the choice number");
-            //Console.WriteLine("Skriv '0' för att börja om");
 
             while (!(int.TryParse(Console.ReadLine(), out chosenOffice)
                 && chosenOffice <= CarRentalOffices.Count
                 && chosenOffice > 0))
             {
                 Console.WriteLine("Invalid value. Choose the office again!");
-                //Console.WriteLine("Skriv '0' för att börja om");
             }
-            //if (chosenOffice == 0)
-            //{
-            //    ResetUI();
-            //}
             ChosenOffice = chosenOffice - 1;
             ACustomerUI.ChosenOffice = ChosenOffice;
             AnEmployeeUI.ChosenOffice = ChosenOffice;
@@ -117,6 +174,13 @@ namespace Biluthyrning.Classes
             CarChosen = 0;
             ChosenUI = 0;
             StartUI();
+        }
+
+        public void UpdateCurrentDay(int currentDayFromCalender)
+        {
+            CurrentDay = currentDayFromCalender;
+            ACustomerUI.CurrentDay = currentDayFromCalender;
+            AnEmployeeUI.CurrentDay = currentDayFromCalender;
         }
     }
 }

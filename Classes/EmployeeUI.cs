@@ -8,12 +8,13 @@ namespace Biluthyrning.Classes
 {
     internal class EmployeeUI : UI
     {
-        private int[] allActions = { 0, 1, 2, 3 };
+        private List<int> allActions;
         private int ChosenAction { get; set; }
 
         public EmployeeUI(List<CarRentalOffice> carRentalOffices) : base(carRentalOffices)
         {
             CarRentalOffices = carRentalOffices;
+            allActions = new List<int> { 0, 1, 2, 3 };
         }
 
         public void StartUI()
@@ -56,10 +57,12 @@ namespace Biluthyrning.Classes
                 switch (resetOrEnd)
                 {
                     case "Y":
+                        flag = true;
                         StartUI();
                         break;
 
                     case "R":
+                        flag = true;
                         RestartUI();
                         break;
 

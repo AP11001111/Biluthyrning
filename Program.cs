@@ -1,6 +1,6 @@
 ﻿using Biluthyrning.Classes;
-using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Biluthyrning
 {
@@ -37,16 +37,18 @@ namespace Biluthyrning
             uiForOffices.AddOffice(new CarRentalOffice("Uppsala office", new Car("Volvo1", 1000, 1310)));
 
             StockholmOffice.AddCar(new Car("Volvo6", 900, 231));
+            Calendar calender = new Calendar();
 
-            uiForOffices.StartUI();
-            //Console.WriteLine(StockholmOffice);
+            Parallel.Invoke(() =>
+                            {
+                                calender.StartCalender(uiForOffices);
+                            },
 
-            StockholmOffice.Cars[2].Rent(10, 1121);
-            StockholmOffice.Cars[4].Rent(14, 2733);
-            StockholmOffice.Cars[1].Rent(1, 632);
-            StockholmOffice.Cars[2].Rent(3, 1321);
-
-            //Console.WriteLine(StockholmOffice);
+                            () =>
+                            {
+                                uiForOffices.StartUI();
+                            }
+                        );
         }
     }
 }
