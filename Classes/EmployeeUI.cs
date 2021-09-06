@@ -8,13 +8,13 @@ namespace Biluthyrning.Classes
 {
     internal class EmployeeUI : UI
     {
-        private List<int> allActions;
+        private List<int> AllEmployeeActions;
         private int ChosenAction { get; set; }
 
         public EmployeeUI(List<CarRentalOffice> carRentalOffices) : base(carRentalOffices)
         {
             CarRentalOffices = carRentalOffices;
-            allActions = new List<int> { 0, 1, 2, 3 };
+            AllEmployeeActions = new List<int> { 0, 1, 2, 3 };
         }
 
         public void StartUI()
@@ -85,7 +85,7 @@ namespace Biluthyrning.Classes
             Console.WriteLine("3: Add a car");
             Console.WriteLine("Input '0' to go to start");
             while (!(int.TryParse(Console.ReadLine(), out chosenAction)
-                && allActions.Contains(chosenAction)))
+                && AllEmployeeActions.Contains(chosenAction)))
             {
                 Console.WriteLine("Invalid input. Please choose again!");
                 Console.WriteLine("Input '0' to go to start");

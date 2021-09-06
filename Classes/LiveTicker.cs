@@ -1,51 +1,48 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Biluthyrning.Classes
 {
     internal class LiveTicker
     {
+        public bool StopUI { get; set; }
         public string StringToReturn { get; set; }
         public CarRentalOffice Office { get; set; }
 
         public LiveTicker(CarRentalOffice office)
         {
             Office = office;
+            StopUI = false;
         }
 
-        public string StartUI()
+        public void StartUI(Calendar calendar, UI ui)
         {
-            //bool reduceDays = true;
-
             string stringToReturn = "";
-            bool flag = false;
 
-            while (!flag)
+            while (!StopUI)
             {
-                //Console.Clear();
+                Console.Clear();
                 Console.WriteLine($"Welcome to {Office.OfficeName}!\n");
                 Console.WriteLine(Office);
                 Console.WriteLine("\nInput 'R' to go to start");
                 Console.WriteLine("Input 'N' to close the program");
-                if (Reader.TryReadLine(out stringToReturn, 1500))
+                if (Reader.TryReadLine(out stringToReturn, 2000))
                 {
                     StringToReturn = stringToReturn.ToUpper();
-                }
-                //stringToReturn = Console.ReadLine().ToUpper();
-                switch (StringToReturn)
-                {
-                    case "R":
-                        flag = true;
+                    switch (StringToReturn)
+                    {
+                        case "R":
+                            StopUI = true;
+                            break;
 
-                        break;
-
-                    case "N":
-                        flag = true;
-                        break;
+                        case "N":
+                            StopUI = true;
+                            break;
+                    }
                 }
+                calendar.IncreaseCurrentDay();
+                ui.UpdateCurrentDay(calendar.CurrentDay);
+                ui.UpdateCarDaysToAvailability();
             }
-            return StringToReturn;
         }
     }
 }

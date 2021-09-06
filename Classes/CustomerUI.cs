@@ -103,7 +103,7 @@ namespace Biluthyrning.Classes
                 switch (resetOrEnd)
                 {
                     case "Y":
-                        StartUI();
+                        StartCustomerUI();
                         break;
 
                     case "R":

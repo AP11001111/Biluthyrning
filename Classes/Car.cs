@@ -59,7 +59,6 @@ namespace Biluthyrning.Classes
                 DaysCarRentedFor = 0;
             }
             DaysUntilCarAvailable--;
-            Console.WriteLine(DaysUntilCarAvailable);
         }
     }
 }

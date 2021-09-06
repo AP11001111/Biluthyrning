@@ -10,7 +10,7 @@ namespace Biluthyrning.Classes
     internal class Calendar
     {
         public bool StopCalender { get; set; }
-        private int CurrentDay;
+        public int CurrentDay;
         private readonly object CurrentDayLock = new object();
 
         public Calendar()
@@ -23,36 +23,18 @@ namespace Biluthyrning.Classes
         {
             while (!StopCalender)
             {
-                //lock (CurrentDayLock)
-                //{
                 Thread.Sleep(2000);
-                //Parallel.Invoke(() =>
-                //{
                 IncreaseCurrentDay();
                 ui.UpdateCurrentDay(CurrentDay);
-                Task.Run(() => ui.UpdateCarDaysToAvailability());
-                Console.WriteLine("Outside");
-                Console.WriteLine(ui.RefreshLiveTicker);
-                Thread.Sleep(500);
-                //t.Start();
-                //ui.UpdateCarDaysToAvailability();
-                //},
-                //() =>
-                //{
+                ui.UpdateCarDaysToAvailability();
                 if (ui.RefreshLiveTicker)
                 {
-                    Console.WriteLine("inside");
-                    ui.ALiveTicker.StartUI();
+                    ui.ALiveTicker.StartUI(this, ui);
                     if (ui.StopUI)
                     {
                         StopCalender = true;
                     }
                 }
-                //});
-
-                //Console.WriteLine("Calender Current Day: " + GetCurrentDay());
-                //Console.WriteLine("UI Current Day: " + ui.CurrentDay);
-                //}
             }
         }
 
@@ -72,7 +54,7 @@ namespace Biluthyrning.Classes
             return CurrentDay;
         }
 
-        private void IncreaseCurrentDay()
+        public void IncreaseCurrentDay()
         {
             CurrentDay++;
         }
