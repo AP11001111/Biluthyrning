@@ -4,7 +4,7 @@ A car rental with multiple renting offices, cars and an inbuilt calendar.
 ## Introduction and Components
 The application provides an interface for both the employees and the customers of the car rental via the UI class.  
 An internal calender where 1 day is approximately equal to 2 seconds from the real world starts at the same time as the application keeps working in the background.  
-The calender is used to a number of variables such as the day of rental, to update the days remaining until a car is available again, etc.   
+The calender is used for a number of variables such as the day of rental, to update the days remaining until a car is available again, etc.   
 The calender also powers the LiveTicker which as the name suggests, shows and keeps refreshing the days left until the car is available again, and eventually the availability.  
   
 An Employee has the option to add new offices, cars, see the revenue of the office or to view the LiveTicker.  
