@@ -1,4 +1,4 @@
-# CarRental
+# Car Rental
 A car rental with multiple renting offices, cars and an inbuilt calendar.
 
 ## Introduction and Components
