@@ -14,7 +14,7 @@ A customer has the option to rent one or more cars and to view the LiveTicker.
 The application initially used a design where the UI class was split into three classes, CustomerUI and EmployeeUI classes inheriting from the UI class.  
 The design was deemed optimal considering the application didn't include a calender and a LiveTicker.  
 While the design facilitated for a better structure, readability and easier moving between the UIs, it was not suitable for the added functionality.  
-There were issues calling and assgning values to UIs since there were multiple instance variable with the same name (owing to the inheritance)  
+There were issues while calling and assigning values to UIs since there were multiple instance variable with the same name (owing to the inheritance)  
 Having a single UI class resolved most of the issues although making the class dense on methods.  
 
 ## Known Bugs
