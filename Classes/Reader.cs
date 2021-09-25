@@ -13,6 +13,7 @@ namespace Biluthyrning.Classes
         private static string InputLine;
         private static ConsoleKeyInfo InputKey;
         private static ReadTypeAsEnum ReadType;
+        private static bool IsReadKeyInputHidden;
 
         private enum ReadTypeAsEnum { Read, ReadKey, ReadLine };
 
@@ -38,7 +39,7 @@ namespace Biluthyrning.Classes
                         break;
 
                     case ReadTypeAsEnum.ReadKey:
-                        InputKey = Console.ReadKey();
+                        InputKey = Console.ReadKey(IsReadKeyInputHidden);
                         break;
 
                     case ReadTypeAsEnum.ReadLine:
@@ -61,8 +62,9 @@ namespace Biluthyrning.Classes
             return success;
         }
 
-        public static bool TryReadKey(out ConsoleKey inputKey, int timeOutMillisecs = Timeout.Infinite)
+        public static bool TryReadKey(out ConsoleKey inputKey, int timeOutMillisecs = Timeout.Infinite, bool isReadKeyInputHidden = false)
         {
+            IsReadKeyInputHidden = isReadKeyInputHidden;
             ReadType = ReadTypeAsEnum.ReadKey;
             getInput.Set();
             bool success = gotInput.WaitOne(timeOutMillisecs);
