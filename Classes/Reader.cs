@@ -50,6 +50,12 @@ namespace Biluthyrning.Classes
             }
         }
 
+        /// <summary>
+        /// ReadLine() that continues the program if an input isn't recieved in timeOutMillisecs
+        /// </summary>
+        /// <param name="inputLine"> Output on timeout: null</param>
+        /// <param name="timeOutMillisecs"></param>
+        /// <returns>A bool confirming if an input was recieved</returns>
         public static bool TryReadLine(out string inputLine, int timeOutMillisecs = Timeout.Infinite)
         {
             ReadType = ReadTypeAsEnum.ReadLine;
@@ -62,6 +68,13 @@ namespace Biluthyrning.Classes
             return success;
         }
 
+        /// <summary>
+        /// ReadKey() that continues the program if an input isn't recieved in timeOutMillisecs
+        /// </summary>
+        /// <param name="inputKey">Output on timeout: Help key</param>
+        /// <param name="timeOutMillisecs"></param>
+        /// <param name="isReadKeyInputHidden"></param>
+        /// <returns>A bool confirming if an input was recieved</returns>
         public static bool TryReadKey(out ConsoleKey inputKey, int timeOutMillisecs = Timeout.Infinite, bool isReadKeyInputHidden = false)
         {
             IsReadKeyInputHidden = isReadKeyInputHidden;
@@ -77,6 +90,12 @@ namespace Biluthyrning.Classes
             return success;
         }
 
+        /// <summary>
+        /// Read() that continues the program if an input isn't recieved in timeOutMillisecs
+        /// </summary>
+        /// <param name="inputChar">Output on timeout: -1</param>
+        /// <param name="timeOutMillisecs"></param>
+        /// <returns></returns>
         public static bool TryRead(out int inputChar, int timeOutMillisecs = Timeout.Infinite)
         {
             ReadType = ReadTypeAsEnum.Read;
