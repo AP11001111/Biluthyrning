@@ -5,14 +5,20 @@ using System.Threading;
 
 namespace Biluthyrning.Classes
 {
-    internal class Reader
+    public class Reader
     {
         private static Thread inputThread;
         private static AutoResetEvent getInput, gotInput;
-        private static string input;
+        private static int Input;
+        private static string InputLine;
+        private static ConsoleKeyInfo InputKey;
+        private static ReadTypeAsEnum ReadType;
+
+        private enum ReadTypeAsEnum { Read, ReadKey, ReadLine };
 
         static Reader()
         {
+            ReadType = new ReadTypeAsEnum();
             getInput = new AutoResetEvent(false);
             gotInput = new AutoResetEvent(false);
             inputThread = new Thread(reader);
@@ -25,19 +31,59 @@ namespace Biluthyrning.Classes
             while (true)
             {
                 getInput.WaitOne();
-                input = Console.ReadLine();
+                switch (ReadType)
+                {
+                    case ReadTypeAsEnum.Read:
+                        Input = Console.Read();
+                        break;
+
+                    case ReadTypeAsEnum.ReadKey:
+                        InputKey = Console.ReadKey();
+                        break;
+
+                    case ReadTypeAsEnum.ReadLine:
+                        InputLine = Console.ReadLine();
+                        break;
+                }
                 gotInput.Set();
             }
         }
 
-        public static bool TryReadLine(out string line, int timeOutMillisecs = Timeout.Infinite)
+        public static bool TryReadLine(out string inputLine, int timeOutMillisecs = Timeout.Infinite)
         {
+            ReadType = ReadTypeAsEnum.ReadLine;
             getInput.Set();
             bool success = gotInput.WaitOne(timeOutMillisecs);
             if (success)
-                line = input;
+                inputLine = InputLine;
             else
-                line = null;
+                inputLine = null;
+            return success;
+        }
+
+        public static bool TryReadKey(out ConsoleKey inputKey, int timeOutMillisecs = Timeout.Infinite)
+        {
+            ReadType = ReadTypeAsEnum.ReadKey;
+            getInput.Set();
+            bool success = gotInput.WaitOne(timeOutMillisecs);
+            if (success)
+                inputKey = InputKey.Key;
+            else
+                /*Returning a key that has a low possibility of being used
+                  as ConsoleKey is non nullable value type*/
+                inputKey = ConsoleKey.Help;
+            return success;
+        }
+
+        public static bool TryRead(out int inputChar, int timeOutMillisecs = Timeout.Infinite)
+        {
+            ReadType = ReadTypeAsEnum.Read;
+            getInput.Set();
+            bool success = gotInput.WaitOne(timeOutMillisecs);
+            if (success)
+                inputChar = Input;
+            else
+                inputChar = -1;
             return success;
         }
     }

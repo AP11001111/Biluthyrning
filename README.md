@@ -18,4 +18,4 @@ There were issues while calling and assigning values to UIs since there were mul
 Having a single UI class resolved most of the issues although making the class dense on methods.  
 
 ## Known Bugs
-- A ReadLine() remains open when UI.RestartUI() is called from LiveTicker  
+- A ReadLine() remains open when UI.RestartUI() is called from LiveTicker   
